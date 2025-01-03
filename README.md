@@ -54,8 +54,6 @@ Installation
 
 Clone the repository
 
-bashCopygit clone https://github.com/yourusername/parkinsons-voice-analyzer.git
-
 Install dependencies
 
 bashCopyflutter pub get

@@ -1,118 +1,74 @@
-Parkinson's Voice Analyzer
-Overview
-An open-source Flutter application that analyzes voice patterns to detect potential early signs of Parkinson's disease. This app implements voice analysis techniques based on established research and uses machine learning to identify vocal biomarkers associated with Parkinson's disease.
-Research Background
-The application is based on several key research papers:
+# 🧠 Parkinson's Disease Voice Detection with Machine Learning
 
-Little MA, et al. (2009) - "Suitability of dysphonia measurements for telemonitoring of Parkinson's disease"
-Tsanas A, et al. (2010) - "Novel speech signal processing algorithms for high-accuracy classification of Parkinson's disease"
-Sakar BE, et al. (2013) - "Collection and analysis of a Parkinson speech dataset with multiple types of sound recordings"
+> A lightweight and effective machine learning system for detecting **Parkinson’s Disease** from **voice samples**, trained with a Random Forest and optimized for **mobile and embedded deployment** using **TensorFlow Lite**.
 
-Technical Implementation
-The algorithm analyzes multiple voice parameters:
-Time Domain Features:
+---
 
-Jitter (cycle-to-cycle variations of fundamental frequency)
-Shimmer (cycle-to-cycle variations of amplitude)
-HNR (Harmonics-to-Noise Ratio)
-NHR (Noise-to-Harmonics Ratio)
+## 🎯 Project Goal
 
-Frequency Domain Features:
+This project aims to build a tool that can identify Parkinson’s Disease from voice recordings using **machine learning techniques**.  
+Beyond training and evaluating the model, the objective was to **convert it into a lightweight format** using **TensorFlow Lite**, making it suitable for mobile phones and embedded systems.
 
-MFCC (Mel-frequency cepstral coefficients)
-Fundamental frequency (F0) statistics
-Frequency perturbation
-Amplitude perturbation
+---
 
-Nonlinear Dynamics Features:
+## 📊 Dataset Overview
 
-PPE (Pitch Period Entropy)
-DFA (Detrended Fluctuation Analysis)
-Spread1, Spread2, and D2
-RPDE (Recurrence Period Density Entropy)
+- **Size:** 195 voice samples  
+- **Features:** 24 vocal biomarkers  
+- **Class distribution:**
+  - 🧬 Class 1 (Parkinson’s): 147 samples
+  - 💬 Class 0 (Healthy): 48 samples
 
-Model Performance
+> ⚠️ The dataset is imbalanced toward Parkinson’s patients — this was considered during model evaluation.
 
-Accuracy: 85-95%
-Sensitivity: 88%
-Specificity: 87%
+---
 
-Training Dataset:
+## 🤖 Machine Learning Model
 
-195 voice recordings
-31 participants (23 with Parkinson's)
-Multiple recording sessions per participant
+### 🪵 Algorithm: **Random Forest Classifier**
+A robust ensemble learning method based on decision trees:
+- Reduces overfitting  
+- Works well with small/medium datasets  
+- Handles noise and outliers  
+- No need for heavy preprocessing  
+- Provides feature importance scores for explainability  
 
-Getting Started
-Prerequisites
+### 🔧 Model Tuning
 
-Flutter SDK
-Android Studio or VS Code
-iOS development tools (for iOS deployment)
+**Optimization method:** `GridSearchCV`  
+**Best hyperparameters:**
+- `n_estimators = 100` — number of trees  
+- `max_depth = None` — trees grow until optimal splits  
+- `min_samples_split = 5` — controls tree complexity
 
-Installation
+---
 
-Clone the repository
+## 🧪 Model Performance
 
-Install dependencies
+- ✅ **Accuracy:** 92%  
+- 🧠 **Recall (Parkinson’s class):** 97%  
+- 📈 **AUC-ROC:** 0.96  
+- 🔍 Confusion Matrix: only **3 errors** on the test set (39 samples)
 
-bashCopyflutter pub get
+> The model shows strong predictive performance, particularly in identifying patients with Parkinson’s.
 
-Run the app
+---
 
-bashCopyflutter run
-Dependencies
-yamlCopydependencies:
-  flutter:
-    sdk: flutter
-  record: ^4.4.4
-  permission_handler: ^10.2.0
-  path_provider: ^2.0.15
-Usage Instructions
-For optimal results:
+## 📦 TensorFlow Lite Conversion
 
-Environment:
+After training, the model was successfully converted to **TensorFlow Lite** for efficient deployment on edge devices.
 
-Quiet room with minimal background noise
-No echo or reverberation
+### 📐 Model Specs:
+- **Input shape:** `(None, 22)` → Each sample has 22 features  
+- **Output:** Probability distribution across 2 classes (Healthy / Parkinson's)
 
+## 👨‍🚀 Authors & Credits
 
-Recording Position:
+> Angela Rossi EMAIL: angela.rossi393@gmail.com
 
-Hold device 15-20 cm (6-8 inches) from mouth
-Maintain consistent distance
-
-
-Voice Recording:
-
-Say "ahhh" at a comfortable pitch
-Maintain steady volume for 3-5 seconds
-Avoid varying pitch or volume
-
-
-Multiple Recordings:
-
-Take 3-5 recordings for better accuracy
-Use average results
-
-
-
-Important Disclaimer
-This app is intended for research and screening purposes only. It should not be used as a diagnostic tool. The analysis is based on statistical models and may not be accurate for all users. Always consult healthcare professionals for medical diagnosis and advice.
-Contributing
-We welcome contributions to improve the app. Please follow these steps:
-
-Fork the repository
-Create your feature branch
-Commit your changes
-Push to the branch
-Create a new Pull Request
-
-License
-This project is licensed under the MIT License - see the LICENSE.md file for details.
-Acknowledgments
-
-UCI Machine Learning Repository for the Parkinson's dataset
-Research teams behind the foundational studies
-Flutter and package maintainers
-All contributors and testers
+**Example inference:**
+```plaintext
+Output shape: (1, 2)  
+Predicted probabilities: [0.0118, 0.9881]  
+→ Prediction: Class 1 (Parkinson)
+)_
